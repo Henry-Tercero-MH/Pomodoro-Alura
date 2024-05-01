@@ -18,7 +18,7 @@ const audioPlay = new Audio("./sonidos/play.wav");
 const audioPausa = new Audio("./sonidos/pause.mp3");
 const audioTiempoFinalizado = new Audio("./sonidos/beep.mp3");
 
-let tiempoTranscurridoEnSegundos = 5;
+let tiempoTranscurridoEnSegundos = 1500;
 let idIntervalo = null;
 
 musica.loop = true;
@@ -81,8 +81,9 @@ const cuentaRegresiva = () => {
     reiniciar();
     return;
   }
+  textoIniciarPausar.textContent = "Pausar";
   tiempoTranscurridoEnSegundos -= 1;
-  console.log("Temporizador: " + tiempoTranscurridoEnSegundos);
+  mostrarTiempo();
 };
 
 botonIniciarPausar.addEventListener("click", iniciarOpausar);
@@ -90,14 +91,23 @@ botonIniciarPausar.addEventListener("click", iniciarOpausar);
 function iniciarOpausar() {
   if (idIntervalo) {
     audioPausa.play();
+    iconoIniciarPausar.setAttribute("src", `./imagenes/pause.png`);
     reiniciar();
     return;
   }
   audioPlay.play();
+
   idIntervalo = setInterval(cuentaRegresiva, 1000);
 }
 
 function reiniciar() {
   clearInterval(idIntervalo);
   idIntervalo = null;
+  textoIniciarPausar.textContent = "Comenzar";
+  iconoIniciarPausar.setAttribute("src", `./imagenes/play_arrow.png`);
+}
+
+function mostrarTiempo() {
+  const tiempo = tiempoTranscurridoEnSegundos;
+  tiempoEnPantalla.innerHTML = `${tiempo}`;
 }
